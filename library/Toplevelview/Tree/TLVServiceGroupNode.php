@@ -1,12 +1,14 @@
 <?php
-/* Copyright (C) 2024 Icinga Development Team <info@icinga.com> */
 
 namespace Icinga\Module\Toplevelview\Tree;
 
+use Icinga\Module\Toplevelview\Model\ServicegroupSummary;
+
 use Icinga\Application\Benchmark;
 use Icinga\Exception\NotFoundError;
-use Icinga\Module\Icingadb\Model\ServicegroupSummary;
+
 use ipl\Stdlib\Filter;
+
 use stdClass;
 
 /**
@@ -65,6 +67,8 @@ class TLVServiceGroupNode extends TLVIcingaNode
             $sg->services_critical_unhandled = $servicegroup->services_critical_unhandled;
             $sg->services_unknown_handled = $servicegroup->services_unknown_handled;
             $sg->services_unknown_unhandled = $servicegroup->services_unknown_unhandled;
+            $sg->services_downtime_handled = $servicegroup->services_downtime_handled;
+            $sg->services_downtime_active = $servicegroup->services_downtime_active;
 
             $root->registeredObjects['servicegroup'][$servicegroup->name] = $sg;
         }
@@ -102,6 +106,9 @@ class TLVServiceGroupNode extends TLVIcingaNode
         $status->set('warning_unhandled', $servicegroup->services_warning_unhandled);
         $status->set('unknown_handled', $servicegroup->services_unknown_handled);
         $status->set('unknown_unhandled', $servicegroup->services_unknown_unhandled);
+
+        $status->set('downtime_handled', $servicegroup->services_downtime_handled);
+        $status->set('downtime_active', $servicegroup->services_downtime_active);
 
         // extra metadata for view
         $status->setMeta('services_total', $servicegroup->services_total);

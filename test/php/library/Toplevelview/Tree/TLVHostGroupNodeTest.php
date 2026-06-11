@@ -61,6 +61,10 @@ final class TLVHostGroupNodeTest extends TestCase
                 $h->services_critical_unhandled = 1;
                 $h->services_unknown_handled = 1;
                 $h->services_unknown_unhandled = 1;
+                $h->hosts_downtime_handled = 1;
+                $h->hosts_downtime_active = 1;
+                $h->services_downtime_handled = 1;
+                $h->services_downtime_active = 1;
 
                 return $h;
             }

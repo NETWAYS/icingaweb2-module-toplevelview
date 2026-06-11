@@ -1,12 +1,14 @@
 <?php
-/* Copyright (C) 2017 Icinga Development Team <info@icinga.com> */
 
 namespace Icinga\Module\Toplevelview\Tree;
 
+use Icinga\Module\Toplevelview\Model\Hostgroupsummary;
+
 use Icinga\Application\Benchmark;
 use Icinga\Exception\NotFoundError;
-use Icinga\Module\Icingadb\Model\Hostgroupsummary;
+
 use ipl\Stdlib\Filter;
+
 use stdClass;
 
 /**
@@ -65,12 +67,16 @@ class TLVHostGroupNode extends TLVIcingaNode
             $hg->services_ok = $hostgroup->services_ok;
             $hg->hosts_down_handled = $hostgroup->hosts_down_handled;
             $hg->hosts_down_unhandled = $hostgroup->hosts_down_unhandled;
+            $hg->hosts_downtime_handled = $hostgroup->hosts_downtime_handled;
+            $hg->hosts_downtime_active = $hostgroup->hosts_downtime_active;
             $hg->services_warning_handled = $hostgroup->services_warning_handled;
             $hg->services_warning_unhandled = $hostgroup->services_warning_unhandled;
             $hg->services_critical_handled = $hostgroup->services_critical_handled;
             $hg->services_critical_unhandled = $hostgroup->services_critical_unhandled;
             $hg->services_unknown_handled = $hostgroup->services_unknown_handled;
             $hg->services_unknown_unhandled = $hostgroup->services_unknown_unhandled;
+            $hg->services_downtime_handled = $hostgroup->services_downtime_handled;
+            $hg->services_downtime_active = $hostgroup->services_downtime_active;
 
             $root->registeredObjects['hostgroup'][$hostgroup->name] = $hg;
         }
@@ -127,6 +133,9 @@ class TLVHostGroupNode extends TLVIcingaNode
         $status->set('warning_unhandled', $hostgroup->services_warning_unhandled);
         $status->set('unknown_handled', $hostgroup->services_unknown_handled);
         $status->set('unknown_unhandled', $hostgroup->services_unknown_unhandled);
+
+        $status->set('downtime_handled', $hostgroup->hosts_downtime_handled + $hostgroup->services_downtime_handled);
+        $status->set('downtime_active', $hostgroup->hosts_downtime_active + $hostgroup->services_downtime_active);
 
         // extra metadata for view
         $status->setMeta('hosts_total', $hostgroup->hosts_total);
