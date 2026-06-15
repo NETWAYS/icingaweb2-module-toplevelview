@@ -59,6 +59,57 @@
 }
 
 .tlv-status-tile {
+  &.critical, &.down {
+    background-color: @tlv-color-critical-bg;
+    color: @tlv-color-critical-fg;
+  }
+  &.critical.handled, &.down.handled {
+    background-color: fade(@tlv-color-critical-handled-bg, 50%);
+    color: @tlv-color-critical-handled-fg;
+  }
+  &.unknown, &.unreachable {
+    background-color: @tlv-color-unknown-bg;
+    color: @tlv-color-unknown-fg;
+  }
+  &.unknown.handled, &.unreachable.handled {
+    background-color: fade(@tlv-color-unknown-handled-bg, 50%);
+    color: @tlv-color-unknown-handled-fg;
+  }
+  &.warning {
+    background-color: @tlv-color-warning-bg;
+    color: @tlv-color-warning-fg;
+  }
+  &.warning.handled {
+    background-color: fade(@tlv-color-warning-handled-bg, 50%);
+    color: @tlv-color-warning-handled-fg;
+  }
+  &.ok, &.up {
+    background-color: @tlv-color-ok-bg;
+    color: @tlv-color-ok-fg;
+  }
+  &.downtime.active {
+    background-color: @tlv-color-downtime-bg;
+    color: @tlv-color-downtime-fg;
+  }
+  &.downtime.handled {
+    background-color: @tlv-color-downtime-handled-bg;
+    color: @tlv-color-downtime-handled-fg;
+  }
+  &.pending {
+    background-color: @tlv-color-pending-bg;
+    color: @tlv-color-pending-fg;
+  }
+  &.missing {
+    background-color: @tlv-color-missing-bg;
+    color: @tlv-color-missing-fg;
+  }
+  &.total {
+    background-color: @icinga-blue;
+    color: @text-color-on-icinga-blue;
+  }
+}
+
+.tlv-status-badge {
   .badges {
     .badge {
       border: 0.1em solid @white;

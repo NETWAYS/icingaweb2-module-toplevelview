@@ -28,7 +28,7 @@ class Zend_View_Helper_Badges extends Zend_View_Helper_Abstract
             if ($value !== null && $value > 0) {
                 $values = true;
                 $title = $value . ' ' . Str::prettyTitle($key);
-                $class = 'tlv-status-tile ' . str_replace('_', ' ', $key);
+                $class = 'tlv-status-badge ' . str_replace('_', ' ', $key);
                 $htm .= sprintf(
                     '<div class="badge status-badge %s" title="%s">%s</div>',
                     $class,
