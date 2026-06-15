@@ -32,11 +32,11 @@ class TLVStatus
         'critical_unhandled',
         'warning_unhandled',
         'unknown_unhandled',
+        'downtime_handled',
         'critical_handled',
         'warning_handled',
         'unknown_handled',
         'ok',
-        'downtime_handled',
         'missing',
     ];
 
