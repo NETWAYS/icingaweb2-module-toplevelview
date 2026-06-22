@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.1.0](https://github.com/Icinga/icingaweb2-module-toplevelview/tree/v1.1.0) (unreleased)
+
+**Implemented enhancements:**
+
+- Add custom queries for hostgroup and servicegroup to query downtimes, this enables downtime colors and badges
+- Make the badge and tile color independent from each other, this allows for more customizations
+
 ## [v1.0.1](https://github.com/Icinga/icingaweb2-module-toplevelview/tree/v1.0.1) (2026-02-20)
 
 **Implemented enhancements:**
