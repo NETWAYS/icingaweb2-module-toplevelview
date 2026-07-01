@@ -144,7 +144,7 @@ class ServicegroupSummary extends UnionModel
                     'servicegroup_name_ci'      => 'servicegroup.name_ci',
                     'servicegroup_display_name' => 'servicegroup.display_name',
                     'service_id'                => 'service.id',
-                    'service_state'             => 'state.soft_state',
+                    'service_state'             => 'state.hard_state',
                     'service_handled'           => 'state.is_handled',
                     'service_reachable'         => 'state.is_reachable',
                     'service_severity'          => 'state.severity',
