@@ -42,8 +42,7 @@ class Zend_View_Helper_Tree extends Zend_View_Helper_Abstract
             $url = Url::fromPath(
                 'icingadb/servicegroup',
                 [
-                    'name' => $node->get('servicegroup'),
-                    'sort' => 'service.state.severity desc'
+                    'name' => $node->get('servicegroup')
                 ]
             );
         } elseif ($type === 'hostgroup') {
@@ -51,8 +50,7 @@ class Zend_View_Helper_Tree extends Zend_View_Helper_Abstract
             $url = Url::fromPath(
                 'icingadb/services',
                 [
-                    'hostgroup.name' => $node->get('hostgroup'),
-                    'sort' => 'service.state.severity desc'
+                    'hostgroup.name' => $node->get('hostgroup')
                 ]
             );
 
@@ -69,8 +67,7 @@ class Zend_View_Helper_Tree extends Zend_View_Helper_Abstract
                 $hostTitle,
                 'icingadb/hosts',
                 [
-                    'hostgroup.name' => $node->get('hostgroup'),
-                    'sort' => 'service.state.severity desc'
+                    'hostgroup.name' => $node->get('hostgroup')
                 ],
                 null,
                 false
