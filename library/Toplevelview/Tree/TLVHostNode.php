@@ -63,6 +63,7 @@ class TLVHostNode extends TLVIcingaNode
             $h->notifications_enabled = $host->notifications_enabled;
             $h->state->hard_state = $host->state->hard_state;
             $h->state->is_flapping = $host->state->is_flapping;
+            $h->state->is_overdue = $host->state->is_overdue;
             $h->state->is_handled = $host->state->is_handled;
             $h->state->in_downtime = $host->state->in_downtime;
 
@@ -95,6 +96,11 @@ class TLVHostNode extends TLVIcingaNode
 
         $status->zero();
         $status->add('total');
+
+        if ($host->state->is_overdue) {
+            $status->add('overdue', 1);
+            return $this->status;
+        }
 
         // We only care about the hard state in TLV
         $state = $host->state->hard_state;

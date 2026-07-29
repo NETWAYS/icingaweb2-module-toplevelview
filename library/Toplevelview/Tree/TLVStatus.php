@@ -22,6 +22,7 @@ class TLVStatus
         'downtime_active'    => null,
         'ok'                 => null,
         'missing'            => null,
+        'overdue'            => null,
         'total'              => null,
     ];
 
@@ -32,6 +33,7 @@ class TLVStatus
         'critical_unhandled',
         'warning_unhandled',
         'unknown_unhandled',
+        'overdue',
         'downtime_handled',
         'critical_handled',
         'warning_handled',

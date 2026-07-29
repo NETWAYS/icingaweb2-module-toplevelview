@@ -31,6 +31,9 @@
 @tlv-color-missing-bg: @gray-light;
 @tlv-color-missing-fg: @text-color;
 
+@tlv-color-overdue-bg: @color-critical;
+@tlv-color-overdue-fg: white;
+
 .tlv-overview-tiles .tlv-overview-tile {
   display: block;
   float: left;
@@ -103,6 +106,10 @@
     background-color: @tlv-color-missing-bg;
     color: @tlv-color-missing-fg;
   }
+  &.overdue {
+    background-color: @tlv-color-overdue-bg;
+    color: @tlv-color-overdue-fg;
+  }
   &.total {
     background-color: @icinga-blue;
     color: @text-color-on-icinga-blue;
@@ -161,6 +168,10 @@
     background-color: @tlv-color-missing-bg;
     color: @tlv-color-missing-fg;
   }
+  &.overdue {
+    background-color: @tlv-color-overdue-bg;
+    color: @tlv-color-overdue-fg;
+  }
   &.total {
     background-color: @icinga-blue;
     color: @text-color-on-icinga-blue;
@@ -194,6 +205,9 @@
   }
   &.missing {
     border-color: @tlv-color-missing-bg;
+  }
+  &.overdue {
+    border-color: @tlv-color-overdue-bg;
   }
 }
 

@@ -86,6 +86,7 @@ class TLVServiceNode extends TLVIcingaNode
             $s->host->display_name = $service->host->display_name;
             $s->state->hard_state = $service->state->hard_state;
             $s->state->is_flapping = $service->state->is_flapping;
+            $s->state->is_overdue = $service->state->is_overdue;
             $s->state->is_handled = $service->state->is_handled;
             $s->state->in_downtime = $service->state->in_downtime;
 
@@ -121,6 +122,11 @@ class TLVServiceNode extends TLVIcingaNode
 
         $status->zero();
         $status->add('total');
+
+        if ($service->state->is_overdue) {
+            $status->add('overdue', 1);
+            return $this->status;
+        }
 
         // We only care about the hard state in TLV
         $state = $service->state->hard_state;
