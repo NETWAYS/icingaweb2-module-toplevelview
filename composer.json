@@ -1,0 +1,15 @@
+{
+    "require-dev": {
+        "overtrue/phplint": "^9.7",
+        "phpunit/phpunit": "^13.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Icinga\\Module\\Toplevelview\\": "library/Toplevelview/",
+            "ipl\\I18n\\": "_libraries/ipl/vendor/ipl/i18n/src/",
+            "ipl\\Stdlib\\": "_libraries/ipl/vendor/ipl/stdlib/src/",
+            "ipl\\": "_libraries/ipl/vendor/ipl/",
+            "Icinga\\": "_icingaweb2/library/Icinga/"
+        }
+    }
+}

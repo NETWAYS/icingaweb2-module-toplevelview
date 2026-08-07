@@ -33,6 +33,9 @@
     <rule ref="Squiz.Classes.ValidClassName.NotPascalCase">
         <exclude-pattern>*/application/views/helpers/*</exclude-pattern>
     </rule>
+    <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
+        <exclude-pattern>*/application/views/helpers/*</exclude-pattern>
+    </rule>
 
     <rule ref="Generic.Files.LineLength">
         <properties>
