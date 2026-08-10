@@ -12,18 +12,18 @@ class TLVStatus
      * Properties track each tree nodes Icinga states
      */
     protected array $properties = [
-        'critical_unhandled' => null,
-        'critical_handled'   => null,
-        'warning_unhandled'  => null,
-        'warning_handled'    => null,
-        'unknown_unhandled'  => null,
-        'unknown_handled'    => null,
-        'downtime_handled'   => null,
-        'downtime_active'    => null,
-        'ok'                 => null,
-        'missing'            => null,
-        'overdue'            => null,
-        'total'              => null,
+        'critical_unhandled' => 0,
+        'critical_handled'   => 0,
+        'warning_unhandled'  => 0,
+        'warning_handled'    => 0,
+        'unknown_unhandled'  => 0,
+        'unknown_handled'    => 0,
+        'downtime_handled'   => 0,
+        'downtime_active'    => 0,
+        'ok'                 => 0,
+        'missing'            => 0,
+        'overdue'            => 0,
+        'total'              => 0,
     ];
 
     /**
@@ -54,7 +54,7 @@ class TLVStatus
     {
         $properties = $status->getProperties();
         foreach (array_keys($this->properties) as $key) {
-            if ($this->properties[$key] === null) {
+            if ($this->properties[$key] === 0) {
                 $this->properties[$key] = $properties[$key];
             } else {
                 $this->properties[$key] += $properties[$key];
@@ -101,9 +101,6 @@ class TLVStatus
      */
     public function add(string $key, int $value = 1): self
     {
-        if ($this->properties[$key] === null) {
-            $this->properties[$key] = 0;
-        }
         $this->properties[$key] += (int) $value;
         return $this;
     }
@@ -128,7 +125,7 @@ class TLVStatus
     public function getOverall(): string
     {
         foreach (static::$statusPriority as $key) {
-            if ($this->properties[$key] !== null && $this->properties[$key] > 0) {
+            if ($this->properties[$key] !== 0 && $this->properties[$key] > 0) {
                 return $this->cssFriendly($key);
             }
         }
@@ -147,12 +144,12 @@ class TLVStatus
     /**
      * getMeta returns the given key's value from the metadata
      */
-    public function getMeta(string $key): mixed
+    public function getMeta(string $key): int
     {
         if (array_key_exists($key, $this->meta)) {
             return $this->meta[$key];
         } else {
-            return null;
+            return 0;
         }
     }
 
