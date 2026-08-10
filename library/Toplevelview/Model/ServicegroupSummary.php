@@ -60,17 +60,17 @@ class ServicegroupSummary extends UnionModel
         return $q;
     }
 
-    public function getTableName()
+    public function getTableName(): string
     {
         return 'servicegroup';
     }
 
-    public function getKeyName()
+    public function getKeyName(): array
     {
         return ['id' => 'servicegroup_id'];
     }
 
-    public function getColumns()
+    public function getColumns(): array
     {
         return [
             'name'                        => 'servicegroup_name',
@@ -122,12 +122,12 @@ class ServicegroupSummary extends UnionModel
         ];
     }
 
-    public function getSearchColumns()
+    public function getSearchColumns(): array
     {
         return ['name_ci', 'display_name'];
     }
 
-    public function getDefaultSort()
+    public function getDefaultSort(): string
     {
         return 'display_name';
     }

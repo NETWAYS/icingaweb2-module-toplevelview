@@ -14,9 +14,8 @@ use stdClass;
  */
 class TLVServiceNode extends TLVIcingaNode
 {
-    protected $type = 'service';
-
-    protected $key = '{host}!{service}';
+    protected string $type = 'service';
+    protected ?string $key = '{host}!{service}';
 
     public function getTitle(): string
     {
@@ -37,7 +36,7 @@ class TLVServiceNode extends TLVIcingaNode
         return sprintf('%s: %s', $hostname, $name);
     }
 
-    public function register()
+    public function register(): self
     {
         // also register host, because that's what we fetch data with
         $hostDummy = new TLVHostNode();
@@ -49,7 +48,7 @@ class TLVServiceNode extends TLVIcingaNode
 
     public function getKey(): string
     {
-        return sprintf('%s!%s', $this->properties['host'], $this->properties['service']);
+        return sprintf('%s!%s', $this->properties['host'] ?? 'nosuchhost', $this->properties['service'] ?? 'nosuchservice');
     }
 
     public static function fetch(TLVTree $root): void

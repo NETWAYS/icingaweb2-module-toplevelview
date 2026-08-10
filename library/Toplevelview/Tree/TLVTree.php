@@ -19,35 +19,24 @@ use stdClass;
  */
 class TLVTree extends TLVTreeNode
 {
-    /**
-     * @var Database
-     */
     use Database;
 
-    protected static $titleKey = 'name';
-
-    public $registeredTypes = array();
-
-    public $registeredObjects = array();
-
-    protected $fetchedData = array();
-
-    protected $fetched = false;
-
-    protected $fetchTime;
-
-    protected $cacheLifetime = 60;
-
-    protected $viewName;
-
-    protected $viewChecksum;
+    protected static string $titleKey = 'name';
+    public array $registeredTypes = [];
+    public array $registeredObjects = [];
+    protected array $fetchedData = [];
+    protected bool $fetched = false;
+    protected int $fetchTime;
+    protected int $cacheLifetime = 60;
+    protected string $viewName;
+    protected string $viewChecksum;
 
     /**
      * Return a child by its ID
      *
      * @throws NotFoundError if the id cannot be found
      */
-    public function getById($id)
+    public function getById(string $id)
     {
         $ids = explode('-', $id);
         $currentNode = $this;
@@ -96,7 +85,7 @@ class TLVTree extends TLVTreeNode
      *
      * @throws ProgrammingError if the same type by multiple classes is registered
      */
-    public function registerObject($type, $name, $class)
+    public function registerObject($type, $name, $class): void
     {
         if (array_key_exists($type, $this->registeredTypes) && $this->registeredTypes[$type] !== $class) {
             throw new ProgrammingError(
@@ -111,14 +100,14 @@ class TLVTree extends TLVTreeNode
         $this->registeredObjects[$type][$name] = null;
     }
 
-    protected function getCacheName()
+    protected function getCacheName(): string
     {
         $n = $this->getViewName();
         $c = $this->getViewChecksum();
         return sprintf('%s-%s.json', $n, $c);
     }
 
-    protected function loadCache()
+    protected function loadCache(): void
     {
         if (($lifetime = $this->getCacheLifetime()) <= 0) {
             return;
@@ -153,7 +142,7 @@ class TLVTree extends TLVTreeNode
         }
     }
 
-    protected function storeCache()
+    protected function storeCache(): void
     {
         if (($lifetime = $this->getCacheLifetime()) <= 0) {
             return;
@@ -178,7 +167,7 @@ class TLVTree extends TLVTreeNode
      *
      * @throws ProgrammingError if the type has not been registered
      */
-    protected function fetchType($type)
+    protected function fetchType(string $type): self
     {
         if (! array_key_exists($type, $this->registeredTypes)) {
             throw new ProgrammingError('Type %s has not been registered', $type);
@@ -194,7 +183,7 @@ class TLVTree extends TLVTreeNode
         return $this;
     }
 
-    protected function ensureFetched()
+    protected function ensureFetched(): self
     {
         if ($this->fetched !== true) {
             $this->loadCache();
@@ -214,7 +203,7 @@ class TLVTree extends TLVTreeNode
         return $this;
     }
 
-    public function getFetched($type, $key)
+    public function getFetched(string $type, string $key)
     {
         $this->ensureFetched();
 
@@ -230,7 +219,7 @@ class TLVTree extends TLVTreeNode
     /**
      * @return int time
      */
-    public function getFetchTime()
+    public function getFetchTime(): int
     {
         $this->ensureFetched();
 
@@ -240,7 +229,7 @@ class TLVTree extends TLVTreeNode
     /**
      * @return int seconds
      */
-    public function getCacheLifetime()
+    public function getCacheLifetime(): int
     {
         return $this->cacheLifetime;
     }
@@ -250,7 +239,7 @@ class TLVTree extends TLVTreeNode
      *
      * @return $this
      */
-    public function setCacheLifetime($cacheLifetime)
+    public function setCacheLifetime($cacheLifetime): self
     {
         $this->cacheLifetime = $cacheLifetime;
         return $this;

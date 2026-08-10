@@ -16,11 +16,9 @@ use stdClass;
  */
 class TLVServiceGroupNode extends TLVIcingaNode
 {
-    protected $type = 'servicegroup';
-
-    protected $key = 'servicegroup';
-
-    protected static $titleKey = 'servicegroup';
+    protected string $type = 'servicegroup';
+    protected ?string $key = 'servicegroup';
+    protected static string $titleKey = 'servicegroup';
 
     public function getTitle(): string
     {

@@ -14,11 +14,9 @@ use stdClass;
  */
 class TLVHostNode extends TLVIcingaNode
 {
-    protected $type = 'host';
-
-    protected $key = 'host';
-
-    protected static $titleKey = 'host';
+    protected string $type = 'host';
+    protected ?string $key = 'host';
+    protected static string $titleKey = 'host';
 
     public function getTitle(): string
     {
