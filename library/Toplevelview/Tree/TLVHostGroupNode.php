@@ -43,7 +43,7 @@ class TLVHostGroupNode extends TLVIcingaNode
         }
 
         $hgFilter = Filter::any();
-        foreach (array_keys($root->registeredObjects['hostgroup']) as $name) {
+        foreach ($root->registeredObjects['hostgroup'] as $name => $_) {
             $hgFilter->add(Filter::equal('hostgroup_name', $name));
         }
 

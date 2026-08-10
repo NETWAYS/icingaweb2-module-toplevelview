@@ -43,7 +43,7 @@ class TLVServiceGroupNode extends TLVIcingaNode
         }
 
         $hgFilter = Filter::any();
-        foreach (array_keys($root->registeredObjects['servicegroup']) as $name) {
+        foreach ($root->registeredObjects['servicegroup'] as $name => $_) {
             $hgFilter->add(Filter::equal('servicegroup_name', $name));
         }
 

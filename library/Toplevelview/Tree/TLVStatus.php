@@ -53,7 +53,7 @@ class TLVStatus
     public function merge(TLVStatus $status): TLVStatus
     {
         $properties = $status->getProperties();
-        foreach (array_keys($this->properties) as $key) {
+        foreach ($this->properties as $key => $_) {
             if ($this->properties[$key] === 0) {
                 $this->properties[$key] = $properties[$key];
             } else {
@@ -110,7 +110,7 @@ class TLVStatus
      */
     public function zero(): TLVStatus
     {
-        foreach (array_keys($this->properties) as $key) {
+        foreach ($this->properties as $key => $_) {
             $this->properties[$key] = 0;
         }
         return $this;

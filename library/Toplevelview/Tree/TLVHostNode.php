@@ -41,7 +41,7 @@ class TLVHostNode extends TLVIcingaNode
         }
 
         $hostnameFilter = Filter::any();
-        foreach (array_keys($root->registeredObjects['host']) as $name) {
+        foreach ($root->registeredObjects['host'] as $name => $_) {
             $hostnameFilter->add(Filter::equal('name', $name));
         }
 

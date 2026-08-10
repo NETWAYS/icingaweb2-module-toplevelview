@@ -189,7 +189,7 @@ class TLVTree extends TLVTreeNode
             $this->loadCache();
 
             if ($this->fetched !== true) {
-                foreach (array_keys($this->registeredTypes) as $type) {
+                foreach ($this->registeredTypes as $type => $_) {
                     $this->fetchType($type);
                 }
 
