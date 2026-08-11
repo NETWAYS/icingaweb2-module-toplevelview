@@ -7,7 +7,7 @@
             this.icinga = module.icinga;
 
             module.on('click', '.tlv-view-tree .tlv-tree-node', this.processTreeNodeClick);
-            module.on('click', 'div[href].action', this.buttonClick);
+            module.on('click', 'div[href].action', this.onNodeClick);
             module.on('click', '.btn-remove', this.onRemoveClick);
             module.on('rendered', this.rendered);
         }
@@ -17,10 +17,11 @@
          */
         rendered(event) {
             this.collapseOnLoad(event);
-            var $container = $(event.currentTarget);
-            $container.find('.codemirror').each(function (i, el) {
-                var mode = el.getAttribute('data-codemirror-mode');
-                var editor = CodeMirror.fromTextArea(el, {
+            const container = event.currentTarget;
+
+            container.querySelectorAll('.codemirror').forEach(el => {
+                const mode = el.getAttribute('data-codemirror-mode');
+                const editor = CodeMirror.fromTextArea(el, {
                     lineNumbers: true,
                     mode: mode,
                     foldGutter: true,
@@ -41,6 +42,7 @@
          * processTreeNodeClick toggles the collapsed status of the tree nodes
          */
         processTreeNodeClick(event) {
+            // TODO: Refactor to native JS
             event.stopPropagation();
             var $el = $(event.currentTarget);
             var $parent = $el.parents('.tlv-tree-node');
@@ -55,12 +57,12 @@
         }
 
         /**
-         * collapseOnLoad sets all OK nodes to collapsed,
-         * because these are not as interesting.
+         * collapseOnLoad sets all OK nodes to collapsed, because these are not as interesting.
          */
         collapseOnLoad(event) {
-            var $el = $(event.currentTarget);
-            $el.find('.tlv-view-tree .tlv-tree-node.tlv-collapsible.ok').addClass('tlv-collapsed');
+            const el = event.currentTarget;
+            const okNodes = el.querySelectorAll('.tlv-view-tree .tlv-tree-node.tlv-collapsible.ok');
+            okNodes.forEach(node => node.classList.add('tlv-collapsed'));
         }
 
         /**
@@ -68,18 +70,25 @@
          */
         onRemoveClick(event) {
             event.stopPropagation();
-            let target = event.currentTarget;
-            const confirmMsg = target.getAttribute('data-confirmation');
+            const el = event.currentTarget;
+            const confirmMsg = el.getAttribute('data-confirmation');
 
-            return confirm(confirmMsg);
+            if (!confirm(confirmMsg)) {
+                event.preventDefault();
+            }
         }
 
-        buttonClick (event) {
+        /**
+         * onNodeClick handles clicks on a TLV node so that it links to the Icinga object
+         */
+        onNodeClick(event) {
             event.stopPropagation();
-            var $el = $(event.currentTarget);
-            var $links = $el.find('a[href]');
-            if ($links.length > 0) {
-                $links[0].click();
+            const el = event.currentTarget;
+
+            const links = el.querySelectorAll('a[href]');
+
+            if (links.length > 0) {
+                links[0].click();
             }
         }
     }
