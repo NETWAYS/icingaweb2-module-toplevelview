@@ -66,7 +66,7 @@ class Hostgroupsummary extends UnionModel
         return 'hostgroup';
     }
 
-    public function getKeyName(): string
+    public function getKeyName(): mixed
     {
         return ['id' => 'hostgroup_id'];
     }

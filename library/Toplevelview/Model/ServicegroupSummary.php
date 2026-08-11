@@ -65,7 +65,7 @@ class ServicegroupSummary extends UnionModel
         return 'servicegroup';
     }
 
-    public function getKeyName(): array
+    public function getKeyName(): mixed
     {
         return ['id' => 'servicegroup_id'];
     }
