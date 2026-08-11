@@ -153,17 +153,13 @@ class TLVServiceNode extends TLVIcingaNode
             $handled = '_unhandled';
         }
 
-        if ($state === 0 || $state === 99) {
-            $status->add('ok', 1);
-        } elseif ($state === 1) {
-            $status->add('warning' . $handled, 1);
-        } elseif ($state === 2) {
-            $status->add('critical' . $handled, 1);
-        } elseif ($state === 10) {
-            $status->add('downtime_handled');
-        } else {
-            $status->add('unknown' . $handled, 1);
-        }
+        match ($state) {
+            0, 99 => $status->add('ok', 1),
+            1 => $status->add('warning' . $handled, 1),
+            2 => $status->add('critical' . $handled, 1),
+            10 => $status->add('downtime_handled'),
+            default => $status->add('unknown' . $handled, 1),
+        };
 
         return $this->status;
     }

@@ -31,7 +31,7 @@ class TLVHostGroupNode extends TLVIcingaNode
             $n = $obj->display_name;
         }
 
-        return sprintf('%s', $n);
+        return $n;
     }
 
     public static function fetch(TLVTree $root): void
@@ -59,9 +59,7 @@ class TLVHostGroupNode extends TLVIcingaNode
             $hg->display_name = $hostgroup->display_name;
             $hg->hosts_total = $hostgroup->hosts_total;
             $hg->hosts_up = $hostgroup->hosts_up;
-            $hg->hosts_total = $hostgroup->hosts_total;
             $hg->services_total = $hostgroup->services_total;
-            $hg->hosts_up = $hostgroup->hosts_up;
             $hg->services_ok = $hostgroup->services_ok;
             $hg->hosts_down_handled = $hostgroup->hosts_down_handled;
             $hg->hosts_down_unhandled = $hostgroup->hosts_down_unhandled;

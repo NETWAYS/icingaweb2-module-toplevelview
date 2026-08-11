@@ -34,6 +34,7 @@
 @tlv-color-overdue-bg: @color-critical;
 @tlv-color-overdue-fg: white;
 
+/* General styling of the tiles */
 .tlv-overview-tiles .tlv-overview-tile {
   display: block;
   float: left;
@@ -61,6 +62,7 @@
   }
 }
 
+/* Background and text color of the tiles */
 .tlv-status-tile {
   &.critical, &.down {
     background-color: @tlv-color-critical-bg;
@@ -116,6 +118,7 @@
   }
 }
 
+/* Background and text color of the badges that contain the counts */
 .tlv-status-badge {
   .badges {
     .badge {
@@ -178,6 +181,7 @@
   }
 }
 
+/* Background and text color of a group of tiles */
 .tlv-status-section {
   &.critical, &.down {
     border-color: @tlv-color-critical-bg;

@@ -31,7 +31,7 @@ class TLVServiceGroupNode extends TLVIcingaNode
             $n = $obj->display_name;
         }
 
-        return sprintf('%s', $n);
+        return $n;
     }
 
     public static function fetch(TLVTree $root): void

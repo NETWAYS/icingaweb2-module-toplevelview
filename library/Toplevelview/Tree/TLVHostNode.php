@@ -29,7 +29,7 @@ class TLVHostNode extends TLVIcingaNode
             $n = $obj->display_name;
         }
 
-        return sprintf('%s', $n);
+        return $n;
     }
 
     public static function fetch(TLVTree $root): void
@@ -120,15 +120,12 @@ class TLVHostNode extends TLVIcingaNode
             $handled = '_unhandled';
         }
 
-        if ($state === 0) {
-            $status->add('ok');
-        } elseif ($state === 1 || $state === 2) {
-            $status->add('critical' . $handled);
-        } elseif ($state === 10) {
-            $status->add('downtime_handled');
-        } else {
-            $status->add('unknown_handled');
-        }
+        match ($state) {
+            0 => $status->add('ok', 1),
+            1, 2 => $status->add('critical' . $handled, 1),
+            10 => $status->add('downtime_handled'),
+            default => $status->add('unknown_handled' . $handled, 1),
+        };
 
         return $this->status;
     }
