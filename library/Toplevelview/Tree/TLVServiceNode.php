@@ -124,7 +124,6 @@ class TLVServiceNode extends TLVIcingaNode
 
         if ($service->state->is_overdue) {
             $status->add('overdue', 1);
-            return $this->status;
         }
 
         // We only care about the hard state in TLV

@@ -33,7 +33,6 @@ class TLVStatus
         'critical_unhandled',
         'warning_unhandled',
         'unknown_unhandled',
-        'overdue',
         'downtime_handled',
         'critical_handled',
         'warning_handled',

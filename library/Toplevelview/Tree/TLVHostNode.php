@@ -97,7 +97,6 @@ class TLVHostNode extends TLVIcingaNode
 
         if ($host->state->is_overdue) {
             $status->add('overdue', 1);
-            return $this->status;
         }
 
         // We only care about the hard state in TLV
