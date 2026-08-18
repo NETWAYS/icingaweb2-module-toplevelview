@@ -18,44 +18,36 @@ class View
 
     /**
      * Format of this View (e.g. 'yml')
-     * @var string
      */
-    protected $format;
+    protected string $format;
     /**
      * Name if this view (also used for the filename)
-     * @var string
      */
-    protected $name;
+    protected ?string $name;
     /**
      * Contains the parsed YAML (yaml_parse)
-     * @var string
      */
-    protected $raw;
+    protected ?array $raw;
     /**
      * The TLVTree object for this View
-     * @var TLVTree
      */
-    protected $tree;
+    protected ?TLVTree $tree;
     /**
      * Has this View been loaded
-     * @var bool
      */
-    public $hasBeenLoaded = false;
+    public bool $hasBeenLoaded = false;
     /**
      * Has this View been loaded from a session
-     * @var bool
      */
-    public $hasBeenLoadedFromSession = false;
+    public bool $hasBeenLoadedFromSession = false;
     /**
      * Content of the configuration file
-     * @var string
      */
-    protected $text;
+    protected string $text = '';
     /**
      * SHA1 checksum of the text
-     * @var string
      */
-    protected $textChecksum;
+    protected ?string $textChecksum;
 
     public function __construct(string $name, string $format)
     {
@@ -95,17 +87,15 @@ class View
      * @throws InvalidPropertyException if the YAML config cannot be parsed
      * @throws NotImplementedError if the format is unknown
      */
-    protected function ensureParsed()
+    protected function ensureParsed(): void
     {
         if ($this->raw === null) {
             Benchmark::measure('Begin parsing YAML document');
 
             $text = $this->getText();
-            if ($text === null) {
-                // new View
-                $this->raw = array();
+            if ($text === '') {
+                $this->raw = [];
             } elseif ($this->format == self::FORMAT_YAML) {
-                // TODO: use stdClass instead of Array?
                 $this->raw = yaml_parse($text);
                 if (! is_array($this->raw)) {
                     throw new InvalidPropertyException('Could not parse YAML config!');
@@ -138,7 +128,7 @@ class View
      *
      * @throws ProgrammingError if you try to edit children here
      */
-    public function setMeta($key, $value)
+    public function setMeta($key, $value): View
     {
         if ($key === 'children') {
             throw new ProgrammingError('You can not edit children here!');
@@ -151,10 +141,10 @@ class View
      * getMetaData returns all YAML root elements that are not 'childen',
      * thus the View's metadata.
      */
-    public function getMetaData()
+    public function getMetaData(): array
     {
         $this->ensureParsed();
-        $data = array();
+        $data = [];
         foreach ($this->raw as $key => $value) {
             if ($key !== 'children') {
                 $data[$key] = $value;
@@ -183,7 +173,7 @@ class View
      * getText returns the Views text, which contains the full YAML data
      * @return string
      */
-    public function getText(): ?string
+    public function getText(): string
     {
         return $this->text;
     }
@@ -211,10 +201,10 @@ class View
     /**
      * setText sets the text (YAML) for this View.
      * Hint: This will reset textChecksum, raw, and tree
-     * @param $text
-     * @return $this
+     * @param $text string
+     * @return View
      */
-    public function setText($text)
+    public function setText(string $text): View
     {
         $this->text = $text;
         $this->textChecksum = null;
@@ -251,9 +241,9 @@ class View
     /**
      * setName sets the name for this View
      * @param string $name
-     * @return $this
+     * @return View
      */
-    public function setName($name)
+    public function setName(string $name): View
     {
         $this->name = $name;
         return $this;

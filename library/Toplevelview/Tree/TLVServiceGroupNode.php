@@ -16,11 +16,9 @@ use stdClass;
  */
 class TLVServiceGroupNode extends TLVIcingaNode
 {
-    protected $type = 'servicegroup';
-
-    protected $key = 'servicegroup';
-
-    protected static $titleKey = 'servicegroup';
+    protected string $type = 'servicegroup';
+    protected ?string $key = 'servicegroup';
+    protected static string $titleKey = 'servicegroup';
 
     public function getTitle(): string
     {
@@ -33,7 +31,7 @@ class TLVServiceGroupNode extends TLVIcingaNode
             $n = $obj->display_name;
         }
 
-        return sprintf('%s', $n);
+        return $n;
     }
 
     public static function fetch(TLVTree $root): void
@@ -45,7 +43,7 @@ class TLVServiceGroupNode extends TLVIcingaNode
         }
 
         $hgFilter = Filter::any();
-        foreach (array_keys($root->registeredObjects['servicegroup']) as $name) {
+        foreach ($root->registeredObjects['servicegroup'] as $name => $_) {
             $hgFilter->add(Filter::equal('servicegroup_name', $name));
         }
 
@@ -60,6 +58,7 @@ class TLVServiceGroupNode extends TLVIcingaNode
             $sg = new stdClass;
             $sg->display_name = $servicegroup->display_name;
             $sg->services_total = $servicegroup->services_total;
+            $sg->services_overdue_total = $servicegroup->services_overdue_total;
             $sg->services_ok = $servicegroup->services_ok;
             $sg->services_warning_handled = $servicegroup->services_warning_handled;
             $sg->services_warning_unhandled = $servicegroup->services_warning_unhandled;
@@ -98,6 +97,7 @@ class TLVServiceGroupNode extends TLVIcingaNode
         }
 
         $status->set('total', $servicegroup->services_total);
+        $status->set('overdue', $servicegroup->services_overdue_total);
         $status->set('ok', $servicegroup->services_ok);
 
         $status->set('critical_handled', $servicegroup->services_critical_handled);

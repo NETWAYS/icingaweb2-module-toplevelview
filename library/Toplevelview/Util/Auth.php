@@ -12,7 +12,7 @@ use ipl\Stdlib\Str;
  */
 trait Auth
 {
-    public function getAuth()
+    public function getAuth(): IcingaAuth
     {
         return IcingaAuth::getInstance();
     }
@@ -47,7 +47,7 @@ trait Auth
      * assertAccessToView asserts that the current user has permission
      * for the given view. Returns false if not
      */
-    public function hasAccessToView($restrictions, $name): bool
+    public function hasAccessToView($restrictions, string $name): bool
     {
         $user = $this->getAuth()->getUser();
 
@@ -66,7 +66,7 @@ trait Auth
     /**
      * getRestrictions returns the current user's restrictions.
      */
-    public function getRestrictions($name = 'toplevelview/filter/views')
+    public function getRestrictions(string $name = 'toplevelview/filter/views')
     {
         $user = $this->getAuth()->getUser();
 

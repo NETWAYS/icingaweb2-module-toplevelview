@@ -44,6 +44,7 @@ final class TLVServiceNodeTest extends TestCase
                 $s = new stdClass;
                 $s->hard_state = 1;
                 $s->is_handled = true;
+                $s->is_overdue = false;
                 $s->in_downtime = true;
                 $h->display_name = 'service';
                 $h->notifications_enabled = false;

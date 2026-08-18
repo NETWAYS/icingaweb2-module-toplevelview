@@ -11,24 +11,25 @@ class TLVStatus
     /**
      * Properties track each tree nodes Icinga states
      */
-    protected $properties = [
-        'critical_unhandled' => null,
-        'critical_handled'   => null,
-        'warning_unhandled'  => null,
-        'warning_handled'    => null,
-        'unknown_unhandled'  => null,
-        'unknown_handled'    => null,
-        'downtime_handled'   => null,
-        'downtime_active'    => null,
-        'ok'                 => null,
-        'missing'            => null,
-        'total'              => null,
+    protected array $properties = [
+        'critical_unhandled' => 0,
+        'critical_handled'   => 0,
+        'warning_unhandled'  => 0,
+        'warning_handled'    => 0,
+        'unknown_unhandled'  => 0,
+        'unknown_handled'    => 0,
+        'downtime_handled'   => 0,
+        'downtime_active'    => 0,
+        'ok'                 => 0,
+        'missing'            => 0,
+        'overdue'            => 0,
+        'total'              => 0,
     ];
 
     /**
      * statusPriority decribes the priority from worst to best
      */
-    protected static $statusPriority = [
+    protected static array $statusPriority = [
         'critical_unhandled',
         'warning_unhandled',
         'unknown_unhandled',
@@ -43,16 +44,16 @@ class TLVStatus
     /**
      * meta tracks get overall count of hosts and services if this status object
      */
-    protected $meta = [];
+    protected array $meta = [];
 
     /**
      * merge merges another TLVStatus object's properties into this object
      */
-    public function merge(TLVStatus $status)
+    public function merge(TLVStatus $status): TLVStatus
     {
         $properties = $status->getProperties();
-        foreach (array_keys($this->properties) as $key) {
-            if ($this->properties[$key] === null) {
+        foreach ($this->properties as $key => $_) {
+            if ($this->properties[$key] === 0) {
                 $this->properties[$key] = $properties[$key];
             } else {
                 $this->properties[$key] += $properties[$key];
@@ -66,7 +67,7 @@ class TLVStatus
      *
      * @param string $key key of the property
      */
-    public function get($key)
+    public function get(string $key)
     {
         return $this->properties[$key];
     }
@@ -77,7 +78,7 @@ class TLVStatus
      * @param string $key key of the property
      * @param int $value value to set to property to
      */
-    public function set($key, $value)
+    public function set($key, $value): self
     {
         $this->properties[$key] = (int) $value;
         return $this;
@@ -86,7 +87,7 @@ class TLVStatus
     /**
      * getProperties returns all properties
      */
-    public function getProperties()
+    public function getProperties(): array
     {
         return $this->properties;
     }
@@ -97,11 +98,8 @@ class TLVStatus
      * @param string $key key of the property
      * @param int $value value to add to the property
      */
-    public function add($key, $value = 1)
+    public function add(string $key, int $value = 1): self
     {
-        if ($this->properties[$key] === null) {
-            $this->properties[$key] = 0;
-        }
         $this->properties[$key] += (int) $value;
         return $this;
     }
@@ -109,9 +107,9 @@ class TLVStatus
     /**
      * zero sets all properties to zero (0)
      */
-    public function zero()
+    public function zero(): TLVStatus
     {
-        foreach (array_keys($this->properties) as $key) {
+        foreach ($this->properties as $key => $_) {
             $this->properties[$key] = 0;
         }
         return $this;
@@ -126,7 +124,7 @@ class TLVStatus
     public function getOverall(): string
     {
         foreach (static::$statusPriority as $key) {
-            if ($this->properties[$key] !== null && $this->properties[$key] > 0) {
+            if ($this->properties[$key] !== 0 && $this->properties[$key] > 0) {
                 return $this->cssFriendly($key);
             }
         }
@@ -137,7 +135,7 @@ class TLVStatus
      * cssFriendly transforms the given key to be CSS friendly,
      * meaning using spaces between the state and the handled indicator
      */
-    protected function cssFriendly($key): string
+    protected function cssFriendly(string $key): string
     {
         return str_replace('_', ' ', $key);
     }
@@ -145,19 +143,19 @@ class TLVStatus
     /**
      * getMeta returns the given key's value from the metadata
      */
-    public function getMeta($key)
+    public function getMeta(string $key): int
     {
         if (array_key_exists($key, $this->meta)) {
             return $this->meta[$key];
         } else {
-            return null;
+            return 0;
         }
     }
 
     /**
      * setMeta sets the given key/value in the metadata
      */
-    public function setMeta($key, $value)
+    public function setMeta(string $key, int $value): void
     {
         $this->meta[$key] = $value;
     }

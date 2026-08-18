@@ -44,7 +44,7 @@ final class TLVServiceGroupNodeTest extends TestCase
                 $s = new stdClass;
                 $s->hard_state = 1;
                 $s->is_handled = true;
-                $s->in_downtime = true;
+                $h->services_overdue_total = 1;
                 $h->display_name = 'servicegroup';
 
                 $h->services_total = 1;
