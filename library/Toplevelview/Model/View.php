@@ -110,7 +110,7 @@ class View
 
     /**
      * getMeta returns a value from the View's metadata.
-     * Metadata are root elemts in the YAML file that are not 'children'
+     * Metadata are root elements in the YAML file that are not 'children'
      * @throws ProgrammingError if you try to edit children here
      */
     public function getMeta($key)
