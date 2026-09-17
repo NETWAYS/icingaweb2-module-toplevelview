@@ -1,8 +1,9 @@
 # Changelog
 
-## [v1.1.1](https://github.com/Icinga/icingaweb2-module-toplevelview/tree/v1.1.1) (unreleased)
+## [v1.2.0](https://github.com/Icinga/icingaweb2-module-toplevelview/tree/v1.2.0) (2026-09-17)
 
 - Add handling for overdue states
+- Only use hard states for host groups and service groups
 - Improve PHP type hints and some code simplifications
 - Modernize Icinga JavaScript, replace some jQuery with native
 
