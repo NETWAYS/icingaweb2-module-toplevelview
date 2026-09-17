@@ -32,7 +32,7 @@ Example: `/etc/icingaweb2/modules/toplevelview/views/myview.yml`.
 
 ## Installation
 
-Top Level View is a module for Icinga Web 2, and can be installed via git or a tarball.
+Top Level View is a module for Icinga Web 2, and can be installed via Git or a tarball.
 
 The only other requirement is the PHP YAML extension.
 
@@ -62,6 +62,8 @@ Then enable the module in the web interface, or via CLI:
     icingacli module enable toplevelview
 
 **Hint:** This module is capable of strict Content Security Policy (CSP).
+
+**Note:** the module is currently not yet available via https://packages.netways.de/ due to some unresolved dependencies.
 
 ## Permissions and Restrictions
 
