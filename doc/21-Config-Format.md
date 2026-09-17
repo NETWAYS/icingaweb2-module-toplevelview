@@ -52,7 +52,7 @@ Everything below is only visible via the tree view, and every Icinga node should
 Every node is an object in YAML, while the object attribute `children` is an array of all children objects
 for that node.
 
-Indention does matter as far as it defines the levels and structure of the objects. (Please use no soft tabs!)
+Indentation does matter as far as it defines the levels and structure of the objects. (Please use no soft tabs!)
 
 Every node can have multiple attributes, they are partially validated, and unknown keys just get ignored.
 

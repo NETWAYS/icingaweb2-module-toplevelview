@@ -2,7 +2,7 @@
 
 A short overview of the TLV classes and their roles.
 
-`ViewConfig` is responsable for managing the YAML files that contain
+`ViewConfig` is responsible for managing the YAML files that contain
 the views.
 
 ```
@@ -15,7 +15,7 @@ This class also handles storing/loading the view data into either YAML files
 or the user's session.
 
 `Model\View` represents a single Top Level View and is
-responsable for parsing the YAML data.
+responsible for parsing the YAML data.
 
 It also contains the tree data structure representing the view's hierarchy.
 The `getTree()` method will return this tree.

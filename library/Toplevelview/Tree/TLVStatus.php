@@ -27,7 +27,7 @@ class TLVStatus
     ];
 
     /**
-     * statusPriority decribes the priority from worst to best
+     * statusPriority describes the priority from worst to best
      */
     protected static array $statusPriority = [
         'critical_unhandled',
