@@ -60,17 +60,17 @@ class ServicegroupSummary extends UnionModel
         return $q;
     }
 
-    public function getTableName()
+    public function getTableName(): string
     {
         return 'servicegroup';
     }
 
-    public function getKeyName()
+    public function getKeyName(): mixed
     {
         return ['id' => 'servicegroup_id'];
     }
 
-    public function getColumns()
+    public function getColumns(): array
     {
         return [
             'name'                        => 'servicegroup_name',
@@ -116,15 +116,18 @@ class ServicegroupSummary extends UnionModel
             'services_downtime_active'    => new Expression(
                 'SUM(CASE WHEN service_in_downtime = \'y\' THEN 1 ELSE 0 END)'
             ),
+            'services_overdue_total'     => new Expression(
+                'SUM(CASE WHEN service_overdue = \'y\' THEN 1 ELSE 0 END)'
+            ),
         ];
     }
 
-    public function getSearchColumns()
+    public function getSearchColumns(): array
     {
         return ['name_ci', 'display_name'];
     }
 
-    public function getDefaultSort()
+    public function getDefaultSort(): string
     {
         return 'display_name';
     }
@@ -149,6 +152,7 @@ class ServicegroupSummary extends UnionModel
                     'service_reachable'         => 'state.is_reachable',
                     'service_severity'          => 'state.severity',
                     'service_in_downtime'       => 'state.in_downtime',
+                    'service_overdue'           => 'state.is_overdue',
                 ]
             ],
             [
@@ -165,6 +169,7 @@ class ServicegroupSummary extends UnionModel
                     'service_reachable'         => new Expression('NULL'),
                     'service_severity'          => new Expression('0'),
                     'service_in_downtime'       => new Expression('NULL'),
+                    'service_overdue'           => new Expression('NULL'),
                 ]
             ]
         ];

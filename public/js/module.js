@@ -1,29 +1,27 @@
-;(function (Icinga) {
+;(function (Icinga, $) {
 
     'use strict';
 
-    var Toplevelview = function (module) {
-        this.module = module;
-        this.initialize();
-    };
+    class Toplevelview {
+        constructor(module) {
+            this.icinga = module.icinga;
 
-    Toplevelview.prototype = {
-        initialize: function () {
-            this.module.on('click', '.tlv-view-tree .tlv-tree-node', this.processTreeNodeClick);
-            this.module.on('click', 'div[href].action', this.buttonClick, this);
-            this.module.on('click', '.btn-remove', this.onRemoveClick, this);
-            this.module.on('rendered', this.rendered);
-        },
+            module.on('click', '.tlv-view-tree .tlv-tree-node', this.processTreeNodeClick);
+            module.on('click', 'div[href].action', this.onNodeClick);
+            module.on('click', '.btn-remove', this.onRemoveClick);
+            module.on('rendered', this.rendered);
+        }
 
         /**
          * rendered adds the CodeMirror editor to the designated div
          */
-        rendered: function (ev) {
-            this.collapseOnLoad(ev);
-            var $container = $(ev.currentTarget);
-            $container.find('.codemirror').each(function (i, el) {
-                var mode = el.getAttribute('data-codemirror-mode');
-                var editor = CodeMirror.fromTextArea(el, {
+        rendered(event) {
+            this.collapseOnLoad(event);
+            const container = event.currentTarget;
+
+            container.querySelectorAll('.codemirror').forEach(el => {
+                const mode = el.getAttribute('data-codemirror-mode');
+                const editor = CodeMirror.fromTextArea(el, {
                     lineNumbers: true,
                     mode: mode,
                     foldGutter: true,
@@ -38,12 +36,13 @@
                     'Ctrl-F': 'findPersistent'
                 });
             });
-        },
+        }
 
         /**
          * processTreeNodeClick toggles the collapsed status of the tree nodes
          */
-        processTreeNodeClick: function (event) {
+        processTreeNodeClick(event) {
+            // TODO: Refactor to native JS
             event.stopPropagation();
             var $el = $(event.currentTarget);
             var $parent = $el.parents('.tlv-tree-node');
@@ -55,38 +54,45 @@
                 $el.addClass('tlv-collapsed');
                 $all.addClass('tlv-collapsed');
             }
-        },
+        }
 
         /**
-         * collapseOnLoad sets all OK nodes to collapsed,
-         * because these are not as interesting.
+         * collapseOnLoad sets all OK nodes to collapsed, because these are not as interesting.
          */
-        collapseOnLoad: function (event) {
-            var $el = $(event.currentTarget);
-            $el.find('.tlv-view-tree .tlv-tree-node.tlv-collapsible.ok').addClass('tlv-collapsed');
-        },
+        collapseOnLoad(event) {
+            const el = event.currentTarget;
+            const okNodes = el.querySelectorAll('.tlv-view-tree .tlv-tree-node.tlv-collapsible.ok');
+            okNodes.forEach(node => node.classList.add('tlv-collapsed'));
+        }
 
         /**
          * onRemoveClick shows a Browser confirmation windows.
          */
-        onRemoveClick: function (event) {
+        onRemoveClick(event) {
             event.stopPropagation();
-            let target = event.currentTarget;
-            const confirmMsg = target.getAttribute('data-confirmation');
+            const el = event.currentTarget;
+            const confirmMsg = el.getAttribute('data-confirmation');
 
-            return confirm(confirmMsg);
-        },
-
-        buttonClick: function (event) {
-            event.stopPropagation();
-            var $el = $(event.currentTarget);
-            var $links = $el.find('a[href]');
-            if ($links.length > 0) {
-                $links[0].click();
+            if (!confirm(confirmMsg)) {
+                event.preventDefault();
             }
         }
-    };
+
+        /**
+         * onNodeClick handles clicks on a TLV node so that it links to the Icinga object
+         */
+        onNodeClick(event) {
+            event.stopPropagation();
+            const el = event.currentTarget;
+
+            const links = el.querySelectorAll('a[href]');
+
+            if (links.length > 0) {
+                links[0].click();
+            }
+        }
+    }
 
     Icinga.availableModules.toplevelview = Toplevelview;
 
-}(Icinga));
+})(Icinga, jQuery);

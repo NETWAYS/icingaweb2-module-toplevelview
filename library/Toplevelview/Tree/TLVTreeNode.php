@@ -16,61 +16,33 @@ use Icinga\Exception\ProgrammingError;
  */
 class TLVTreeNode extends TreeNode
 {
-    /**
-     * @var string
-     */
-    protected $type = 'node';
-
-    /**
-     * @var string
-     */
-    protected $key = null;
+    protected string $type = 'node';
+    protected ?string $key = null;
 
     /**
      * @var TLVTree
      */
     protected $root;
 
-    /**
-     * @var TLVTreeNode
-     */
-    protected $parent;
-
-    /**
-     * @var string
-     */
-    protected $fullId;
-
-    /**
-     * @var TLVStatus
-     */
-    protected $status;
-
-    /**
-     * @var array
-     */
-    protected $properties = array();
+    protected ?TLVTreeNode $parent = null;
+    protected string $fullId = '';
+    protected ?TLVStatus $status = null;
+    protected array $properties = [];
 
     /**
      * Determine if this node is a leaf
-     *
-     * @var bool
      */
-    protected static $canHaveChildren = true;
+    protected static bool $canHaveChildren = true;
 
     /**
      * The key which represents the display title
-     *
-     * @var string
      */
-    protected static $titleKey = 'name';
+    protected static string $titleKey = 'name';
 
     /**
      * Mapping types to its implementation class
-     *
-     * @var array
      */
-    protected static $typeMap = [
+    protected static array $typeMap = [
         'host'      => 'Icinga\\Module\\Toplevelview\\Tree\\TLVHostNode',
         'service'   => 'Icinga\\Module\\Toplevelview\\Tree\\TLVServiceNode',
         'hostgroup' => 'Icinga\\Module\\Toplevelview\\Tree\\TLVHostGroupNode',
@@ -81,10 +53,8 @@ class TLVTreeNode extends TreeNode
      * Mapping keys to a type
      *
      * Warning: order is important when keys overlap!
-     *
-     * @var array
      */
-    protected static $typeKeyMap = [
+    protected static array $typeKeyMap = [
         'service'   => ['host', 'service'],
         'host'      => 'host',
         'hostgroup' => 'hostgroup',
@@ -101,7 +71,7 @@ class TLVTreeNode extends TreeNode
      * @throws NotImplementedError
      * @throws ProgrammingError
      */
-    public static function fromArray($array, ?TLVTreeNode $parent = null, ?TLVTree $root = null)
+    public static function fromArray(array $array, ?TLVTreeNode $parent = null, ?TLVTree $root = null)
     {
         if ($root === null) {
             Benchmark::measure('Begin loading TLVTree from array');
@@ -187,7 +157,7 @@ class TLVTreeNode extends TreeNode
      *
      * @return TLVTreeNode[]
      */
-    public function getBreadCrumb(&$list = array())
+    public function getBreadCrumb(&$list = [])
     {
         array_unshift($list, $this);
         if ($this->parent !== $this->root) {
@@ -202,7 +172,7 @@ class TLVTreeNode extends TreeNode
      */
     public function getFullId()
     {
-        if ($this->fullId === null) {
+        if ($this->fullId === '') {
             $id = (string) $this->id;
             if ($this->parent !== $this->root) {
                 $this->fullId = $this->parent->getFullId() . '-' . $id;
@@ -241,13 +211,13 @@ class TLVTreeNode extends TreeNode
         }
     }
 
-    public function set($key, $value)
+    public function set($key, $value): self
     {
         $this->properties[$key] = $value;
         return $this;
     }
 
-    public function getTitle()
+    public function getTitle(): ?string
     {
         if (array_key_exists(static::$titleKey, $this->properties)) {
             return Str::limit($this->properties[static::$titleKey], 45);
@@ -261,7 +231,7 @@ class TLVTreeNode extends TreeNode
      *
      * @throws ProgrammingError if the key does not exist
      */
-    public function getKey()
+    public function getKey(): string
     {
         if ($this->key === null) {
             throw new ProgrammingError('Can not get key for %s', get_class($this));
@@ -289,7 +259,7 @@ class TLVTreeNode extends TreeNode
     /**
      * @return TLVTreeNode
      */
-    public function getParent()
+    public function getParent(): TLVTreeNode
     {
         return $this->parent;
     }
@@ -311,7 +281,7 @@ class TLVTreeNode extends TreeNode
      *
      * @throws ConfigurationError When node does not allow children
      */
-    public function appendChild(TreeNode $child)
+    public function appendChild(TreeNode $child): self
     {
         if (static::$canHaveChildren === true) {
             $this->children[] = $child;
@@ -321,7 +291,7 @@ class TLVTreeNode extends TreeNode
         return $this;
     }
 
-    protected function register()
+    protected function register(): self
     {
         if ($this->type !== 'node') {
             $this->root->registerObject($this->type, $this->getKey(), get_class($this));
@@ -335,7 +305,7 @@ class TLVTreeNode extends TreeNode
      * @return TLVStatus
      * @throws ProgrammingError
      */
-    public function getStatus()
+    public function getStatus(): TLVStatus
     {
         if (static::$canHaveChildren === true) {
             if ($this->status === null) {

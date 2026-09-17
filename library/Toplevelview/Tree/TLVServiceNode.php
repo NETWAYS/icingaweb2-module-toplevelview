@@ -14,9 +14,8 @@ use stdClass;
  */
 class TLVServiceNode extends TLVIcingaNode
 {
-    protected $type = 'service';
-
-    protected $key = '{host}!{service}';
+    protected string $type = 'service';
+    protected ?string $key = '{host}!{service}';
 
     public function getTitle(): string
     {
@@ -37,7 +36,7 @@ class TLVServiceNode extends TLVIcingaNode
         return sprintf('%s: %s', $hostname, $name);
     }
 
-    public function register()
+    public function register(): self
     {
         // also register host, because that's what we fetch data with
         $hostDummy = new TLVHostNode();
@@ -49,7 +48,7 @@ class TLVServiceNode extends TLVIcingaNode
 
     public function getKey(): string
     {
-        return sprintf('%s!%s', $this->properties['host'], $this->properties['service']);
+        return sprintf('%s!%s', $this->properties['host'] ?? 'nosuchhost', $this->properties['service'] ?? 'nosuchservice');
     }
 
     public static function fetch(TLVTree $root): void
@@ -62,7 +61,7 @@ class TLVServiceNode extends TLVIcingaNode
 
         $hostnameFilter = Filter::any();
 
-        foreach (array_keys($root->registeredObjects['host']) as $name) {
+        foreach ($root->registeredObjects['host'] as $name => $_) {
             $hostnameFilter->add(Filter::equal('host.name', $name));
         }
 
@@ -86,6 +85,7 @@ class TLVServiceNode extends TLVIcingaNode
             $s->host->display_name = $service->host->display_name;
             $s->state->hard_state = $service->state->hard_state;
             $s->state->is_flapping = $service->state->is_flapping;
+            $s->state->is_overdue = $service->state->is_overdue;
             $s->state->is_handled = $service->state->is_handled;
             $s->state->in_downtime = $service->state->in_downtime;
 
@@ -122,6 +122,10 @@ class TLVServiceNode extends TLVIcingaNode
         $status->zero();
         $status->add('total');
 
+        if ($service->state->is_overdue) {
+            $status->add('overdue', 1);
+        }
+
         // We only care about the hard state in TLV
         $state = $service->state->hard_state;
 
@@ -148,17 +152,13 @@ class TLVServiceNode extends TLVIcingaNode
             $handled = '_unhandled';
         }
 
-        if ($state === 0 || $state === 99) {
-            $status->add('ok', 1);
-        } elseif ($state === 1) {
-            $status->add('warning' . $handled, 1);
-        } elseif ($state === 2) {
-            $status->add('critical' . $handled, 1);
-        } elseif ($state === 10) {
-            $status->add('downtime_handled');
-        } else {
-            $status->add('unknown' . $handled, 1);
-        }
+        match ($state) {
+            0, 99 => $status->add('ok', 1),
+            1 => $status->add('warning' . $handled, 1),
+            2 => $status->add('critical' . $handled, 1),
+            10 => $status->add('downtime_handled'),
+            default => $status->add('unknown' . $handled, 1),
+        };
 
         return $this->status;
     }

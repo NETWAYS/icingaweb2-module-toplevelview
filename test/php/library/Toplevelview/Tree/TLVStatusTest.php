@@ -41,7 +41,7 @@ final class TLVStatusTest extends TestCase
 
         $t->setMeta('hosts_total', 321);
         $this->assertSame(321, $t->getMeta('hosts_total'));
-        $this->assertSame(null, $t->getMeta('services_total'));
+        $this->assertSame(0, $t->getMeta('services_total'));
     }
 
     public function testMerge()
@@ -63,6 +63,6 @@ final class TLVStatusTest extends TestCase
         $this->assertSame(3, $a->get('warning_handled'));
         $this->assertSame(4, $a->get('critical_unhandled'));
         $this->assertSame(2, $a->get('unknown_unhandled'));
-        $this->assertSame(null, $a->get('warning_unhandled'));
+        $this->assertSame(0, $a->get('warning_unhandled'));
     }
 }

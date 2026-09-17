@@ -45,6 +45,7 @@ final class TLVHostNodeTest extends TestCase
                 $s = new stdClass;
                 $s->hard_state = 2;
                 $s->is_handled = false;
+                $s->is_overdue = false;
                 $s->in_downtime = false;
                 $h->notifications_enabled = false;
                 $h->state = $s;

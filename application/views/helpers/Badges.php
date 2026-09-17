@@ -13,7 +13,7 @@ class Zend_View_Helper_Badges extends Zend_View_Helper_Abstract
      * badges renders a TLVNode's TLVStatus into HTML.
      * A badge represents the number of status of a given node
      */
-    public function badges(TLVStatus $status, $problemsOnly = true, $showTotal = false)
+    public function badges(TLVStatus $status, $problemsOnly = true, $showTotal = false): string
     {
         $htm = '';
 
@@ -25,16 +25,18 @@ class Zend_View_Helper_Badges extends Zend_View_Helper_Abstract
             ) {
                 continue;
             }
+
             if ($value !== null && $value > 0) {
                 $values = true;
                 $title = $value . ' ' . Str::prettyTitle($key);
                 $class = 'tlv-status-badge ' . str_replace('_', ' ', $key);
-                $htm .= sprintf(
-                    '<div class="badge status-badge %s" title="%s">%s</div>',
-                    $class,
-                    $title,
-                    $value
-                );
+                // For the overdue states we show the full title instead of just the value
+                // so that it is more visible
+                if ($key === 'overdue') {
+                    $value = $title;
+                }
+
+                $htm .= sprintf('<div class="badge status-badge %s" title="%s">%s</div>', $class, $title, $value);
             }
         }
         $htm .= '</div>';

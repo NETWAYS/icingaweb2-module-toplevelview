@@ -14,11 +14,9 @@ use stdClass;
  */
 class TLVHostNode extends TLVIcingaNode
 {
-    protected $type = 'host';
-
-    protected $key = 'host';
-
-    protected static $titleKey = 'host';
+    protected string $type = 'host';
+    protected ?string $key = 'host';
+    protected static string $titleKey = 'host';
 
     public function getTitle(): string
     {
@@ -31,7 +29,7 @@ class TLVHostNode extends TLVIcingaNode
             $n = $obj->display_name;
         }
 
-        return sprintf('%s', $n);
+        return $n;
     }
 
     public static function fetch(TLVTree $root): void
@@ -43,7 +41,7 @@ class TLVHostNode extends TLVIcingaNode
         }
 
         $hostnameFilter = Filter::any();
-        foreach (array_keys($root->registeredObjects['host']) as $name) {
+        foreach ($root->registeredObjects['host'] as $name => $_) {
             $hostnameFilter->add(Filter::equal('name', $name));
         }
 
@@ -63,6 +61,7 @@ class TLVHostNode extends TLVIcingaNode
             $h->notifications_enabled = $host->notifications_enabled;
             $h->state->hard_state = $host->state->hard_state;
             $h->state->is_flapping = $host->state->is_flapping;
+            $h->state->is_overdue = $host->state->is_overdue;
             $h->state->is_handled = $host->state->is_handled;
             $h->state->in_downtime = $host->state->in_downtime;
 
@@ -96,6 +95,10 @@ class TLVHostNode extends TLVIcingaNode
         $status->zero();
         $status->add('total');
 
+        if ($host->state->is_overdue) {
+            $status->add('overdue', 1);
+        }
+
         // We only care about the hard state in TLV
         $state = $host->state->hard_state;
 
@@ -116,15 +119,12 @@ class TLVHostNode extends TLVIcingaNode
             $handled = '_unhandled';
         }
 
-        if ($state === 0) {
-            $status->add('ok');
-        } elseif ($state === 1 || $state === 2) {
-            $status->add('critical' . $handled);
-        } elseif ($state === 10) {
-            $status->add('downtime_handled');
-        } else {
-            $status->add('unknown_handled');
-        }
+        match ($state) {
+            0 => $status->add('ok', 1),
+            1, 2 => $status->add('critical' . $handled, 1),
+            10 => $status->add('downtime_handled'),
+            default => $status->add('unknown_handled' . $handled, 1),
+        };
 
         return $this->status;
     }

@@ -169,6 +169,21 @@ children:
   - name: WARNING
     children:
     - hostgroup: HG_WARNING
+- name: Servicegroups
+  children:
+  - name: OK
+    children:
+    - servicegroup: SG_OK
+    - servicegroup: SG_SOFT
+  - name: DOWN
+    children:
+    - servicegroup: SG_DOWN
+  - name: CRITICAL
+    children:
+    - servicegroup: SG_CRITICAL
+  - name: WARNING
+    children:
+    - servicegroup: SG_WARNING
 - name: TLV Missing
   children:
   - name: Partially missing

@@ -11,13 +11,13 @@ class Str
      * Str::limit method truncates the given string to the specified length.
      * Used in cases where CSS text-overflow cannot be used.
      *
-     * @param   string $str
+     * @param   ?string $str
      * @param   int    $len
      * @param   string $end
      *
      * @return  string
      */
-    public static function limit($str, $len = 25, $end = '...'): string
+    public static function limit(?string $str, int $len = 25, string $end = '...'): string
     {
         if (empty($str)) {
             return '';
@@ -40,7 +40,7 @@ class Str
      *
      * @return  string
      */
-    public static function prettyTitle($identifier): string
+    public static function prettyTitle(string $identifier): string
     {
         $s = '';
         foreach (explode('_', $identifier) as $p) {

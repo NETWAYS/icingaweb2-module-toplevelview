@@ -11,7 +11,7 @@ use Icinga\Exception\NotImplementedError;
  */
 class TLVIcingaNode extends TLVTreeNode
 {
-    protected static $canHaveChildren = false;
+    protected static bool $canHaveChildren = false;
 
     /**
      * Interface to fetch data for the implementation
@@ -24,6 +24,6 @@ class TLVIcingaNode extends TLVTreeNode
      */
     public static function fetch(/** @noinspection PhpUnusedParameterInspection */ TLVTree $root): void
     {
-        throw new NotImplementedError('fetch() has not been implemented for %s', get_class(new static));
+        throw new NotImplementedError('fetch() has not been implemented for %s', static::class);
     }
 }
