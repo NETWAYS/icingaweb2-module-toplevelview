@@ -32,9 +32,8 @@ them easily available for overview and drill down.
 
 ## Requirements
 
-* Icinga Web 2 >= 2.5.0
-* Icinga DB Web >= 1.0.0
-* php-yaml
+* PHP version ≥ 8.2
+* Icinga Web with Icinga DB Web
 
 Also see [Introduction in docs](doc/01-Introduction.md).
 
